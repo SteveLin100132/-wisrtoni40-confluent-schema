@@ -9,4 +9,5 @@
  * @NOTE
  */
 export * from './confluent-pub-resolve.strategy';
+export * from './json-pub-resolve.strategy';
 export * from './producer-resolve.strategy';

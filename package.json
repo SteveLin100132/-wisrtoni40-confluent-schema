@@ -1,12 +1,15 @@
 {
   "name": "wisrtoni40-confluent-schema",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "main": "lib",
   "description": "Allow request Confluent schema registry with multiple brokers in mean time",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SteveLin100132/-wisrtoni40-confluent-schema.git"
   },
   "scripts": {
+    "prepare": "husky install",
+    "husky:set": "./node_modules/.bin/husky set ",
     "eslint": "./node_modules/.bin/eslint --ignore-path .eslintignore ./src/**",
     "eslint:fix": "./node_modules/.bin/eslint ./src/** --fix",
     "test": "nyc --reporter=lcov mocha --timeout 2000 --require ts-node/register test/**/*.ts",
@@ -28,9 +31,9 @@
   "devDependencies": {
     "@types/mocha": "^8.2.0",
     "@types/node": "^14.14.22",
-    "@types/sinon": "^9.0.10",
     "@types/request": "^2.48.5",
     "@types/request-promise": "^4.1.47",
+    "@types/sinon": "^9.0.10",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
@@ -42,6 +45,7 @@
     "eslint-plugin-mocha": "^8.0.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
+    "husky": "^8.0.1",
     "mocha": "^8.2.1",
     "nodemon": "^2.0.7",
     "nyc": "^15.1.0",

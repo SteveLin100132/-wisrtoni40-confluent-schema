@@ -11,11 +11,7 @@
 
 import { ConsumerGroup } from 'kafka-node';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  ConfluentAvroStrategy,
-  ConfluentMultiRegistry,
-  ConfluentSubResolveStrategy,
-} from 'wisrtoni40-confluent-schema';
+import { JsonSubResolveStrategy } from 'wisrtoni40-confluent-schema';
 
 /**
  * -----------------------------------------------------------------------------
@@ -23,10 +19,8 @@ import {
  * -----------------------------------------------------------------------------
  */
 
-const kafkaHost = 'localhost:9193,localhost:9193,localhost:9193';
-const topic = 'input.your.topic';
-const registryHost =
-  'http://localhost:8585,http://localhost:8585,http://localhost:8585';
+const kafkaHost = 'localhost:9092';
+const topic = 'wks.dx.bnft.result2';
 
 /**
  * -----------------------------------------------------------------------------
@@ -43,24 +37,17 @@ const consumer = new ConsumerGroup(
     encoding: 'buffer',
     fromOffset: 'latest',
     outOfRangeOffset: 'latest',
-    sasl: {
-      mechanism: 'plain',
-      username: 'username',
-      password: 'password',
-    },
   },
   topic,
 );
 
 /**
  * -----------------------------------------------------------------------------
- * Confluent Resolver
+ * JSON Resolver
  * -----------------------------------------------------------------------------
  */
 
-const schemaRegistry = new ConfluentMultiRegistry(registryHost);
-const avro = new ConfluentAvroStrategy();
-const resolver = new ConfluentSubResolveStrategy(schemaRegistry, avro);
+const resolver = new JsonSubResolveStrategy();
 
 /**
  * -----------------------------------------------------------------------------
@@ -69,7 +56,7 @@ const resolver = new ConfluentSubResolveStrategy(schemaRegistry, avro);
  */
 
 consumer.on('message', async msg => {
-  const result = await resolver.resolve(msg.value);
+  const result = await resolver.resolve(msg.value as string);
   console.log(msg.offset);
   console.log(result);
 });

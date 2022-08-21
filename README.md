@@ -27,7 +27,7 @@ import {
   ConfluentAvroStrategy,
   ConfluentMultiRegistry,
   ConfluentSubResolveStrategy,
-} from 'pubsub-tool';
+} from 'wisrtoni40-confluent-schema';
 
 const registryHost = 'http://localhost:8585,http://localhost:8585,http://localhost:8585';
 
@@ -48,7 +48,7 @@ import {
   ConfluentAvroStrategy,
   ConfluentMultiRegistry,
   ConfluentPubResolveStrategy,
-} from 'pubsub-tool';
+} from 'wisrtoni40-confluent-schema';
 
 const registryHost = 'http://localhost:8585,http://localhost:8585,http://localhost:8585';
 const topic = 'testing.topic'

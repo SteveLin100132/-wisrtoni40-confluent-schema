@@ -16,7 +16,7 @@ export abstract class ProducerResolveStrategy {
   /**
    * @param destination 發送資料的目的地
    */
-  constructor(public destination: any) {}
+  constructor(public destination?: any) {}
 
   /**
    * 解析資料

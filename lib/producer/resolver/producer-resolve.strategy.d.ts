@@ -12,11 +12,11 @@
  * 發送資料解析策略
  */
 export declare abstract class ProducerResolveStrategy {
-    destination: any;
+    destination?: any;
     /**
      * @param destination 發送資料的目的地
      */
-    constructor(destination: any);
+    constructor(destination?: any);
     /**
      * 解析資料
      *

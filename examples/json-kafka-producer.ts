@@ -11,11 +11,7 @@
 
 import { HighLevelProducer, KafkaClient } from 'kafka-node';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  ConfluentAvroStrategy,
-  ConfluentMultiRegistry,
-  ConfluentPubResolveStrategy,
-} from 'wisrtoni40-confluent-schema';
+import { JsonPubResolveStrategy } from 'wisrtoni40-confluent-schema';
 
 /**
  * -----------------------------------------------------------------------------
@@ -23,10 +19,8 @@ import {
  * -----------------------------------------------------------------------------
  */
 
-const kafkaHost = 'localhost:9193,localhost:9193,localhost:9193';
-const topic = 'input.your.topic';
-const registryHost =
-  'http://localhost:8585,http://localhost:8585,http://localhost:8585';
+const kafkaHost = 'localhost:9092';
+const topic = 'wks.dx.bnft.result2';
 
 /**
  * -----------------------------------------------------------------------------
@@ -46,11 +40,6 @@ const kafkaClient = new KafkaClient({
     maxTimeout: 1000,
     randomize: false,
   },
-  sasl: {
-    mechanism: 'plain',
-    username: 'username',
-    password: 'password',
-  },
 });
 
 const producer = new HighLevelProducer(kafkaClient, {
@@ -60,13 +49,11 @@ const producer = new HighLevelProducer(kafkaClient, {
 
 /**
  * -----------------------------------------------------------------------------
- * Confluent Resolver
+ * JSON Resolver
  * -----------------------------------------------------------------------------
  */
 
-const schemaRegistry = new ConfluentMultiRegistry(registryHost);
-const avro = new ConfluentAvroStrategy();
-const resolver = new ConfluentPubResolveStrategy(schemaRegistry, avro, topic);
+const resolver = new JsonPubResolveStrategy();
 
 /**
  * -----------------------------------------------------------------------------
@@ -76,15 +63,46 @@ const resolver = new ConfluentPubResolveStrategy(schemaRegistry, avro, topic);
 
 (async () => {
   const data = {
-    params1: 100,
-    params2: 'param2',
+    evt_dt: 1660924800000,
+    site: 'WKS',
+    plant: 'F232',
+    plant_name: 'WKS-5',
+    pillar: 'dpm',
+    system_id: 'aecc',
+    index_type_id: 'direct',
+    kpi_id: 'idl_cost',
+    value: 100,
+    unit: 'RMB',
+    amount: 1000,
+    currency: 'RMB',
+    params: [
+      {
+        name: 'idl_pay',
+        value: 100,
+        type: 'VAR',
+      },
+      {
+        name: 'idl_hr',
+        value: 10,
+        type: 'CONST',
+      },
+    ],
   };
   const processedData = await resolver.resolve(data);
-  producer.send([{ topic, messages: processedData }], (error, result) => {
-    if (error) {
-      console.error(error);
-    } else {
-      console.log(result);
-    }
-  });
+  producer.send(
+    [
+      {
+        topic,
+        messages: processedData,
+        key: '1660924800000.WKS.F232.dpm.aecc.idl_cost',
+      },
+    ],
+    (error, result) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(result);
+      }
+    },
+  );
 })();

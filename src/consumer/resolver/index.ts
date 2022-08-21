@@ -11,3 +11,4 @@
 
 export * from './confluent-sub-resolve.strategy';
 export * from './consumer-resolve.strategy';
+export * from './json-sub-resolve.strategy';

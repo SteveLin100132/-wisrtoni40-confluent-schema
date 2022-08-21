@@ -25,7 +25,7 @@ export class ConfluentPubResolveStrategy extends ProducerResolveStrategy {
   constructor(
     private readonly schemaRegistry: SchemaRegistry,
     private readonly avroResolver: AvroResolveStrategy,
-    public destination: string
+    public destination: string,
   ) {
     super(destination);
   }
@@ -38,19 +38,19 @@ export class ConfluentPubResolveStrategy extends ProducerResolveStrategy {
    * @return 回傳編碼結果
    */
   private async encoded(
-    message: any | any[]
+    message: any | any[],
   ): Promise<Buffer | Buffer[] | Error> {
     try {
       const schemaRegistry = this.schemaRegistry;
       const result = await this.avroResolver.toAvro(
         schemaRegistry,
         this.destination,
-        message
+        message,
       );
       return result;
     } catch (error) {
       console.error(error);
-      return error;
+      return error as Error;
     }
   }
 
@@ -67,7 +67,7 @@ export class ConfluentPubResolveStrategy extends ProducerResolveStrategy {
       return avroMessage;
     } catch (error) {
       console.error(error);
-      return error;
+      return error as Error;
     }
   }
 }

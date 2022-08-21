@@ -37,7 +37,7 @@ export declare class ConfluentPubResolveStrategy extends ProducerResolveStrategy
      * 解析資料
      *
      * @method public
-     * @param input       解析前的資料
+     * @param input 解析前的資料
      * @return 回傳解析後的資料
      */
     resolve(input: any | any[]): Promise<Buffer | Buffer[] | Error>;
